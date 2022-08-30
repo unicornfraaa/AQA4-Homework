@@ -23,8 +23,15 @@ public class cardDeliveryServiceTest {
 
     @Test
     void shouldBeValid () {
-        $("[placeholder=Город]").setValue("Казань");
-//        $x("//input[@placeholder=\"Город\"]").val("Казань");
+//        $x("//*[@data-test-id = 'city']").click();
+//        $x("//*[@data-test-id = 'city']").setValue("Казань");
+
+//        $("[placeholder=Город]").setValue("Казань");
+
+//        $("[placeholder=Город]").val("Казань");
+
+//        $("[placeholder=Город]").sendKeys("Казань");
+        $("[placeholder=Город]").doubleClick().sendKeys("Казань");
 
     }
 }
