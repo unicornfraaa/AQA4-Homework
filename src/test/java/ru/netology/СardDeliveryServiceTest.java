@@ -8,13 +8,15 @@ import org.junit.jupiter.api.Test;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
 
 import static com.codeborne.selenide.Condition.*;
 import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.*;
 
-public class cardDeliveryServiceTest {
+public class СardDeliveryServiceTest {
+    public String generateDate(int days) {
+        return LocalDate.now().plusDays(days).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+    }
 
     @BeforeEach
     void setUp() {
@@ -30,14 +32,8 @@ public class cardDeliveryServiceTest {
 
     @Test
     void shouldBeValid() {
-//        $x("//*[@data-test-id = 'city']").click();
-//        $x("//*[@data-test-id = 'city']").setValue("Казань");
-//        $("[placeholder=Город]").val("Казань");
-//        $("[placeholder=Город]").sendKeys("Казань");
-//        $("[placeholder=Город]").doubleClick().sendKeys("Казань");
-//        $("[placeholder=Город]").setValue("Казань");
+        String meetingDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
-        String meetingDate = LocalDate.now().plusDays(8).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("Иванов Иван");
         $("[data-test-id='phone'] input").setValue("+79999999999");
@@ -50,8 +46,8 @@ public class cardDeliveryServiceTest {
 
     @Test
     void shouldAcceptACityWithADash() {
+        String meetingDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Йошкар-Ола");
-        String meetingDate = LocalDate.now().plusDays(8).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("Иванов Иван");
         $("[data-test-id='phone'] input").setValue("+79999999999");
@@ -64,8 +60,8 @@ public class cardDeliveryServiceTest {
 
     @Test
     void shouldNotAcceptANonAdministrativeCity() {
+        String meetingDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Волжск");
-        String meetingDate = LocalDate.now().plusDays(8).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("Иванов Иван");
         $("[data-test-id='phone'] input").setValue("+79999999999");
@@ -77,8 +73,8 @@ public class cardDeliveryServiceTest {
 
     @Test
     void shouldNotAcceptEnglishLetters() {
+        String meetingDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Kazan");
-        String meetingDate = LocalDate.now().plusDays(8).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("Иванов Иван");
         $("[data-test-id='phone'] input").setValue("+79999999999");
@@ -90,8 +86,8 @@ public class cardDeliveryServiceTest {
 
     @Test
     void shouldNotAcceptAnEmptyCity() {
+        String meetingDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("");
-        String meetingDate = LocalDate.now().plusDays(8).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("Иванов Иван");
         $("[data-test-id='phone'] input").setValue("+79999999999");
@@ -101,24 +97,10 @@ public class cardDeliveryServiceTest {
                 .shouldHave(text("Поле обязательно для заполнения"));
     }
 
-//    @Test
-//    void test() {
-//        $("[data-test-id='city'] input").setValue("Казань");
-//        $("[data-test-id='date'] input").doubleClick().sendKeys("10.10.2020");
-//        $("[data-test-id='name'] input").setValue("Иванов Иван");
-//        $("[data-test-id='phone'] input").setValue("+79999999999");
-//        $("[data-test-id='agreement'] span").click();
-//        $x("//*[contains(text(), 'Забронировать')]").click();
-////        $("[data-test-id='date'].notification__content")
-//        $("[data-test-id='date'].input_invalid")
-//                .shouldNot(visible, Duration.ofSeconds(10))
-//                .shouldHave(text("Заказ на выбранную дату невозможен"));
-//    }
-
     @Test
     void shouldNotAcceptLastDate() {
+        String meetingDate = generateDate(1);
         $("[data-test-id='city'] input").setValue("Казань");
-        String meetingDate = LocalDate.now().minusDays(1).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("Иванов Иван");
         $("[data-test-id='phone'] input").setValue("+79999999999");
@@ -130,8 +112,8 @@ public class cardDeliveryServiceTest {
 
     @Test
     void shouldNotAcceptMeetingToday() {
+        String meetingDate = generateDate(0);
         $("[data-test-id='city'] input").setValue("Казань");
-        String meetingDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("Иванов Иван");
         $("[data-test-id='phone'] input").setValue("+79999999999");
@@ -143,8 +125,8 @@ public class cardDeliveryServiceTest {
 
     @Test
     void shouldNotAcceptForTomorrowDay() {
+        String meetingDate = generateDate(1);
         $("[data-test-id='city'] input").setValue("Казань");
-        String meetingDate = LocalDate.now().plusDays(1).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("Иванов Иван");
         $("[data-test-id='phone'] input").setValue("+79999999999");
@@ -156,8 +138,8 @@ public class cardDeliveryServiceTest {
 
     @Test
     void shouldNotAcceptForDayAfterTomorrow() {
+        String meetingDate = generateDate(2);
         $("[data-test-id='city'] input").setValue("Казань");
-        String meetingDate = LocalDate.now().plusDays(2).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("Иванов Иван");
         $("[data-test-id='phone'] input").setValue("+79999999999");
@@ -169,8 +151,8 @@ public class cardDeliveryServiceTest {
 
     @Test
     void shouldAcceptForDayAfterTwoDays() {
+        String meetingDate = generateDate(3);
         $("[data-test-id='city'] input").setValue("Йошкар-Ола");
-        String meetingDate = LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("Иванов Иван");
         $("[data-test-id='phone'] input").setValue("+79999999999");
@@ -183,8 +165,8 @@ public class cardDeliveryServiceTest {
 
     @Test
     void shouldAcceptDoubleSurname() {
+        String meetingDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
-        String meetingDate = LocalDate.now().plusDays(8).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("Иванов-Петров Иван");
         $("[data-test-id='phone'] input").setValue("+79999999999");
@@ -197,8 +179,8 @@ public class cardDeliveryServiceTest {
 
     @Test
     void shouldAcceptDoubleName() {
+        String meetingDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
-        String meetingDate = LocalDate.now().plusDays(8).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("Иванов Иван-Петр");
         $("[data-test-id='phone'] input").setValue("+79999999999");
@@ -209,28 +191,10 @@ public class cardDeliveryServiceTest {
                 .should(exactText("Встреча успешно забронирована на " + meetingDate));
     }
 
-    // тест на имя без фамилии должен выводить ошибку, а выводит успех
-//    @Test
-//    void shouldNotAcceptWithoutSurname() {
-//        $("[data-test-id='city'] input").setValue("Казань");
-//    String meetingDate = LocalDate.now().plusDays(3).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
-//        $("[data-test-id=date] input").doubleClick.sendKeys(meetingDate);
-//        $("[data-test-id='name'] input").setValue("Иван");
-//        $("[data-test-id='phone'] input").setValue("+79999999999");
-//        $("[data-test-id='agreement'] span").click();
-//        $x("//*[contains(text(), 'Забронировать')]").click();
-//        $("[data-test-id='notification'] .notification__content")
-//                .shouldBe(visible, Duration.ofSeconds(15))
-//                .should(exactText("Встреча успешно забронирована на " + meetingDate));
-
-    //$("[data-test-id='name'].input_invalid").shouldBe(visible, Duration.ofSeconds(5))
-    //                .shouldHave(text("Поле обязательно для заполнения"));
-//    }
-
     @Test
     void shouldNotAcceptEngName() {
+        String meetingDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
-        String meetingDate = LocalDate.now().plusDays(8).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("Ivanov Ivan");
         $("[data-test-id='phone'] input").setValue("+79999999999");
@@ -243,8 +207,8 @@ public class cardDeliveryServiceTest {
 
     @Test
     void shouldNotAcceptSymbolsInName() {
+        String meetingDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
-        String meetingDate = LocalDate.now().plusDays(8).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("*Иванов Иван*");
         $("[data-test-id='phone'] input").setValue("+79999999999");
@@ -257,8 +221,8 @@ public class cardDeliveryServiceTest {
 
     @Test
     void shouldNotAcceptNumbersInName() {
+        String meetingDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
-        String meetingDate = LocalDate.now().plusDays(8).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("Иванов 2Иван");
         $("[data-test-id='phone'] input").setValue("+79999999999");
@@ -271,8 +235,8 @@ public class cardDeliveryServiceTest {
 
     @Test
     void shouldNotAcceptEmptyName() {
+        String meetingDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
-        String meetingDate = LocalDate.now().plusDays(8).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("");
         $("[data-test-id='phone'] input").setValue("+79999999999");
@@ -284,8 +248,8 @@ public class cardDeliveryServiceTest {
 
     @Test
     void shouldNotAcceptEmptyTel() {
+        String meetingDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
-        String meetingDate = LocalDate.now().plusDays(8).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("Иванов Иван");
         $("[data-test-id='phone'] input").setValue("");
@@ -297,8 +261,8 @@ public class cardDeliveryServiceTest {
 
     @Test
     void shouldNotAcceptLettersInTel() {
+        String meetingDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
-        String meetingDate = LocalDate.now().plusDays(8).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("Иванов Иван");
         $("[data-test-id='phone'] input").setValue("qwerty");
@@ -311,8 +275,8 @@ public class cardDeliveryServiceTest {
 
     @Test
     void shouldNotAcceptAnySymbolsInTel() {
+        String meetingDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
-        String meetingDate = LocalDate.now().plusDays(8).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("Иванов Иван");
         $("[data-test-id='phone'] input").setValue("*");
@@ -325,8 +289,8 @@ public class cardDeliveryServiceTest {
 
     @Test
     void shouldNotAcceptLessThan11NumbersInTel() {
+        String meetingDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
-        String meetingDate = LocalDate.now().plusDays(8).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("Иванов Иван");
         $("[data-test-id='phone'] input").setValue("+1234567890");
@@ -339,8 +303,8 @@ public class cardDeliveryServiceTest {
 
     @Test
     void shouldNotAcceptTelStartsFrom8() {
+        String meetingDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
-        String meetingDate = LocalDate.now().plusDays(8).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("Иванов Иван");
         $("[data-test-id='phone'] input").setValue("88005553535");
@@ -353,8 +317,8 @@ public class cardDeliveryServiceTest {
 
     @Test
     void shouldNotAcceptTelWithPlusAtTheEnd() {
+        String meetingDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
-        String meetingDate = LocalDate.now().plusDays(8).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("Иванов Иван");
         $("[data-test-id='phone'] input").setValue("79999999999+");
@@ -367,12 +331,11 @@ public class cardDeliveryServiceTest {
 
     @Test
     void shouldNotAcceptWithoutCheckBox() {
+        String meetingDate = generateDate(4);
         $("[data-test-id='city'] input").setValue("Казань");
-        String meetingDate = LocalDate.now().plusDays(8).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
         $("[data-test-id='date'] input").doubleClick().sendKeys(meetingDate);
         $("[data-test-id='name'] input").setValue("Иванов Иван");
         $("[data-test-id='phone'] input").setValue("+79999999999");
-//        $("[data-test-id='agreement'] span").click();
         $x("//*[contains(text(), 'Забронировать')]").click();
         $("[data-test-id='agreement'].input_invalid")
                 .shouldBe(visible, Duration.ofSeconds(5))
